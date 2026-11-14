@@ -63,6 +63,7 @@ footer{text-align:center;color:var(--mute);font-size:14px;margin-top:26px}
   </div>
 </header>
 <main>
+  <div id="content">
   <p class="lead" data-i18n="lead"></p>
   <div id="quick" class="quick"></div>
   <div id="doc"></div>
@@ -107,15 +108,15 @@ footer{text-align:center;color:var(--mute);font-size:14px;margin-top:26px}
     <button type="submit" class="btn" id="submit" data-i18n="submit"></button>
   </form>
 
+  </div>
+
   <section id="done" class="card done" hidden>
     <div class="tick">✓</div>
     <h2 data-i18n="doneH"></h2>
-    <p data-i18n="doneP"></p>
-    <button class="btn" id="share" data-i18n="share"></button>
+    <p id="doneP" data-i18n="manualP"></p>
+    <button class="btn" id="share" data-i18n="share" hidden></button>
+    <button class="btn" id="retry" data-i18n="retry" hidden></button>
     <button class="btn sec" id="download" data-i18n="download"></button>
-    <button class="btn sec" id="mailbtn" data-i18n="mailBtn"></button>
-    <p class="mute" id="doneNote" data-i18n="doneNote"></p>
-    <p class="mute" id="autoNote" hidden data-i18n="autoNote"></p>
   </section>
   <footer>Feri Stays</footer>
 </main>
@@ -123,8 +124,9 @@ footer{text-align:center;color:var(--mute);font-size:14px;margin-top:26px}
 <script>
 /* ============ CONFIGURACIÓN (edítala aquí) ============ */
 const CFG={
-  email:'feristays@gmail.com',   // correo que recibe las constancias
-  endpoint:''                    // (opcional) enlace de Google Apps Script para recibir la constancia automáticamente
+  email:'feristays@gmail.com',   // correo de contacto que aparece en el punto 5 (datos personales)
+  recipients:['feristays@gmail.com','ericasierraq@gmail.com','lufergo8813@gmail.com'], // quienes reciben cada constancia
+  endpoint:'https://script.google.com/macros/s/AKfycbyYfxDG8wjHyXbsYQr01CWTmFXRDeBvEVtHKaWtMahYZyDnRI59fKHazCefk7Wl-Bs/exec'                    // enlace de Google Apps Script que envía la constancia por correo (ver LEEME.txt)
 };
 
 /* ============ TEXTOS EN 3 IDIOMAS ============ */
@@ -137,7 +139,7 @@ es:{
   acceptH:'Confirmo que:',c6:'Recibí la bicicleta y el casco en buen estado (frenos, llantas, luces) y los revisé antes de salir.',c7:'Me comprometo a usar casco, respetar las normas de tránsito y no montar bajo los efectos del alcohol o drogas.',c1:'Leí y acepto las reglas de uso.',c2:'Entiendo los riesgos y acepto el descargo de responsabilidad.',c3:'Acepto pagar el costo real de reparación o reposición en los casos del punto 3.',c4:'Autorizo el tratamiento de mis datos personales según el punto 5.',
   signH:'Firma (dibújala con el dedo)',clear:'Borrar firma',submit:'Firmar y crear constancia',
   errFields:'Completa los campos marcados en rojo.',errEmail:'Revisa el correo electrónico.',errChecks:'Marca todas las confirmaciones para continuar.',errSign:'Falta tu firma.',errMinors:'Escribe el nombre y la edad de cada menor y confirma que eres su responsable.',
-  doneH:'¡Listo! Tu constancia está creada',doneP:'Envíasela a Feri Stays para completar el proceso. Disfruta tu paseo y usa siempre el casco.',share:'Compartir o enviar el PDF',download:'Descargar PDF',mailBtn:'Abrir correo para avisar',doneNote:'Si usas el correo, recuerda adjuntar el PDF que descargaste.',autoNote:'Tu constancia también se envió automáticamente a Feri Stays.'},
+  doneH:'¡Listo! Tu constancia está creada',manualP:'Envía tu constancia a Feri Stays con el botón de abajo. Elige Gmail: los correos de destino se copian solos, solo pégalos en “Para”.',sendingP:'Enviando tu constancia a Feri Stays…',sentP:'Tu constancia fue enviada a Feri Stays. Disfruta tu paseo y usa siempre el casco.',failP:'No pudimos enviarla automáticamente (¿sin internet?). Reintenta o compártela con el botón de abajo.',retry:'Reintentar envío',share:'Compartir o enviar el PDF',download:'Descargar mi copia en PDF'},
  quick:[['Casco siempre','El casco es obligatorio para todos, en todo momento.'],['Respeta el tránsito','Sigue las normas de tránsito colombianas y cuida a peatones y otros ciclistas.'],['Uso bajo tu responsabilidad','Andar en bicicleta tiene riesgos. Tú decides si estás en condiciones de hacerlo.'],['Gratis, pero cuídala','El uso es gratuito. Los daños o la pérdida por descuido los asumes tú, al costo real de reparación o reposición.']],
  sec:[
  {h:'1. Reglas de uso',l:['Te entregamos la bicicleta y un casco, sin costo. Revisa la bicicleta antes de salir: frenos, llantas, timbre y luces. Si algo no funciona, no la uses y avísanos.','Usa siempre el casco bien ajustado (regla de la casa para todos los usuarios).','Cumple el Código Nacional de Tránsito: circula por la derecha, respeta semáforos y señales, cede el paso a los peatones y no uses los andenes.','No uses el celular ni audífonos mientras pedaleas, no te sujetes de otros vehículos y no lleves pasajeros.','No montes bajo los efectos del alcohol, drogas o medicamentos que afecten tu atención.','De noche o con poca luz usa luces y algo reflectivo; si no los tienes, no salgas.','No uses la bicicleta con lluvia fuerte ni por vías o terrenos peligrosos.','Solo la usa la persona que firma (y los menores a su cargo). No la prestes a otras personas.','Cuando la dejes, asegúrala siempre con el candado. Al terminar tu estadía, devuélvela en el lugar indicado.','No modifiques ni repares la bicicleta. Si hay un accidente o daño, avísanos de inmediato. En una emergencia llama al 123.']},
@@ -157,7 +159,7 @@ en:{
   acceptH:'I confirm that:',c6:'I received the bike and helmet in good condition (brakes, tires, lights) and checked them before riding.',c7:'I commit to wearing a helmet, following traffic rules and not riding under the influence of alcohol or drugs.',c1:'I have read and accept the rules of use.',c2:'I understand the risks and accept the liability waiver.',c3:'I agree to pay the actual cost of repair or replacement in the cases in section 3.',c4:'I authorize the processing of my personal data as described in section 5.',
   signH:'Signature (draw it with your finger)',clear:'Clear signature',submit:'Sign and create record',
   errFields:'Please complete the fields marked in red.',errEmail:'Please check the email address.',errChecks:'Tick all the confirmations to continue.',errSign:'Your signature is missing.',errMinors:'Enter the name and age of each minor and confirm you are responsible for them.',
-  doneH:'Done! Your record has been created',doneP:'Send it to Feri Stays to complete the process. Enjoy your ride and always wear a helmet.',share:'Share or send the PDF',download:'Download PDF',mailBtn:'Open email to notify us',doneNote:'If you use email, remember to attach the PDF you downloaded.',autoNote:'Your record was also sent automatically to Feri Stays.'},
+  doneH:'Done! Your record has been created',manualP:'Send your record to Feri Stays with the button below. Choose Gmail: the destination emails are copied for you, just paste them into “To”.',sendingP:'Sending your record to Feri Stays…',sentP:'Your record was sent to Feri Stays. Enjoy your ride and always wear a helmet.',failP:'We could not send it automatically (no internet?). Try again or share it with the button below.',retry:'Try again',share:'Share or send the PDF',download:'Download my PDF copy'},
  quick:[['Helmet always','A helmet is required for everyone, at all times.'],['Follow traffic rules','Follow Colombian traffic rules and look out for pedestrians and other cyclists.'],['Ride at your own risk','Cycling carries risks. You decide whether you are fit to ride.'],['Free, but take care of it','Use is free. You are responsible for damage or loss through carelessness, at the actual cost of repair or replacement.']],
  sec:[
  {h:'1. Rules of use',l:['We provide the bike and a helmet at no charge. Check the bike before riding: brakes, tires, bell and lights. If something does not work, do not ride it and let us know.','Always wear a properly fitted helmet (house rule for every rider).','Follow the Colombian Traffic Code: ride on the right, obey traffic lights and signs, yield to pedestrians and stay off sidewalks.','Do not use your phone or headphones while riding, do not hold on to other vehicles and do not carry passengers.','Do not ride under the influence of alcohol, drugs or medication that affects your attention.','At night or in low light, use lights and something reflective; if you do not have them, do not ride.','Do not ride in heavy rain or on dangerous roads or terrain.','Only the person who signs (and the minors in their care) may use the bike. Do not lend it to others.','Whenever you leave it, lock it. When your stay ends, return it to the place we indicate.','Do not modify or repair the bike. If there is an accident or damage, tell us right away. In an emergency, call 123.']},
@@ -177,7 +179,7 @@ fr:{
   acceptH:'Je confirme que :',c6:'J’ai reçu le vélo et le casque en bon état (freins, pneus, éclairage) et je les ai vérifiés avant de partir.',c7:'Je m’engage à porter un casque, à respecter le code de la route et à ne pas rouler sous l’effet de l’alcool ou de drogues.',c1:'J’ai lu et j’accepte les règles d’utilisation.',c2:'Je comprends les risques et j’accepte la décharge de responsabilité.',c3:'J’accepte de payer le coût réel de la réparation ou du remplacement dans les cas du point 3.',c4:'J’autorise le traitement de mes données personnelles selon le point 5.',
   signH:'Signature (dessinez-la avec le doigt)',clear:'Effacer la signature',submit:'Signer et créer le justificatif',
   errFields:'Veuillez remplir les champs marqués en rouge.',errEmail:'Vérifiez l’adresse e-mail.',errChecks:'Cochez toutes les confirmations pour continuer.',errSign:'Votre signature est manquante.',errMinors:'Indiquez le nom et l’âge de chaque mineur et confirmez que vous en êtes responsable.',
-  doneH:'C’est fait ! Votre justificatif est créé',doneP:'Envoyez-le à Feri Stays pour terminer la démarche. Bonne balade, et portez toujours votre casque.',share:'Partager ou envoyer le PDF',download:'Télécharger le PDF',mailBtn:'Ouvrir l’e-mail pour nous prévenir',doneNote:'Si vous utilisez l’e-mail, n’oubliez pas de joindre le PDF téléchargé.',autoNote:'Votre justificatif a aussi été envoyé automatiquement à Feri Stays.'},
+  doneH:'C’est fait ! Votre justificatif est créé',manualP:'Envoyez votre justificatif à Feri Stays avec le bouton ci-dessous. Choisissez Gmail : les adresses de destination sont copiées, collez-les simplement dans « À ».',sendingP:'Envoi de votre justificatif à Feri Stays…',sentP:'Votre justificatif a été envoyé à Feri Stays. Bonne balade, et portez toujours votre casque.',failP:'Nous n’avons pas pu l’envoyer automatiquement (pas de connexion ?). Réessayez ou partagez-le avec le bouton ci-dessous.',retry:'Réessayer',share:'Partager ou envoyer le PDF',download:'Télécharger ma copie PDF'},
  quick:[['Casque toujours','Le casque est obligatoire pour tout le monde, en permanence.'],['Respectez le code de la route','Suivez les règles de circulation colombiennes et faites attention aux piétons et aux autres cyclistes.'],['À vos risques','Le vélo comporte des risques. C’est à vous de juger si vous êtes en état de rouler.'],['Gratuit, mais prenez-en soin','L’utilisation est gratuite. Vous répondez des dommages ou de la perte par négligence, au coût réel de la réparation ou du remplacement.']],
  sec:[
  {h:'1. Règles d’utilisation',l:['Nous mettons à votre disposition le vélo et un casque, sans frais. Vérifiez le vélo avant de partir : freins, pneus, sonnette et éclairage. Si quelque chose ne fonctionne pas, ne l’utilisez pas et prévenez-nous.','Portez toujours un casque bien ajusté (règle de la maison pour tous).','Respectez le code de la route colombien : roulez à droite, respectez les feux et les panneaux, cédez le passage aux piétons et n’utilisez pas les trottoirs.','N’utilisez pas le téléphone ni d’écouteurs en roulant, ne vous accrochez pas à d’autres véhicules et ne transportez pas de passager.','Ne roulez pas sous l’effet de l’alcool, de drogues ou de médicaments qui altèrent votre attention.','La nuit ou par faible luminosité, utilisez des feux et un élément réfléchissant ; sinon, ne roulez pas.','Ne roulez pas sous une forte pluie ni sur des routes ou terrains dangereux.','Seule la personne qui signe (et les mineurs sous sa garde) peut utiliser le vélo. Ne le prêtez à personne.','Quand vous le laissez, attachez-le toujours avec l’antivol. À la fin du séjour, rendez-le à l’endroit indiqué.','Ne modifiez ni ne réparez le vélo. En cas d’accident ou de dommage, prévenez-nous immédiatement. En cas d’urgence, appelez le 123.']},
@@ -318,18 +320,22 @@ const toBytes=s=>{const u=new Uint8Array(s.length);for(let i=0;i<s.length;i++)u[
 function download(){const b=new Blob([last_pdf.bytes],{type:'application/pdf'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=last_pdf.name;document.body.appendChild(a);a.click();a.remove()}
 async function sharePDF(){
   const P=T[lang].pdf,file=new File([last_pdf.bytes],last_pdf.name,{type:'application/pdf'});
-  const text='To: '+CFG.email+'\n'+P.mailBody;
+  const to=CFG.recipients.join(', ');try{if(navigator.clipboard)navigator.clipboard.writeText(to).catch(()=>{})}catch(_){}
+  const text='To: '+to+'\n'+P.mailBody;
   try{
     if(navigator.canShare&&navigator.canShare({files:[file]}))await navigator.share({files:[file],title:P.mail,text});
     else download();
   }catch(e){if(e.name!=='AbortError')download()}
 }
-function mailTo(){
-  const P=T[lang].pdf,d=last_pdf.data;
-  const body=P.mailBody+'\n\n'+d.name+' - '+d.docTypeLabel+' '+d.docNum+'\n'+d.when;
-  location.href='mailto:'+CFG.email+'?subject='+encodeURIComponent(P.mail+' - '+d.name)+'&body='+encodeURIComponent(body);
+function setStatus(k,showShare){const p=$('#doneP');p.dataset.i18n=k;p.textContent=T[lang].ui[k];$('#share').hidden=!showShare;$('#retry').hidden=true}
+async function sendAuto(){
+  setStatus('sendingP',false);
+  try{
+    await fetch(CFG.endpoint,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body:JSON.stringify(last_pdf.payload)});
+    setStatus('sentP',false);
+  }catch(e){setStatus('failP',true);$('#retry').hidden=false}
 }
-$('#share').addEventListener('click',sharePDF);$('#download').addEventListener('click',download);$('#mailbtn').addEventListener('click',mailTo);
+$('#share').addEventListener('click',sharePDF);$('#download').addEventListener('click',download);$('#retry').addEventListener('click',sendAuto);
 
 $('#f').addEventListener('submit',async e=>{
   e.preventDefault();const eb=$('#err'),msg=validate();
@@ -344,11 +350,10 @@ $('#f').addEventListener('submit',async e=>{
   const hash=await sha(JSON.stringify(d)+docText()+b64);
   const str=makePDF(buildItems(d,hash),b64,t2.width,t2.height);
   const safe=d.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||'firmante';
-  last_pdf={bytes:toBytes(str),name:'consentimiento-bicicletas-'+safe+'-'+d.iso.slice(0,10)+'.pdf',data:d};
-  $('#f').hidden=true;$('#done').hidden=false;$('#autoNote').hidden=true;scrollTo(0,0);
-  if(CFG.endpoint){
-    try{await fetch(CFG.endpoint,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body:JSON.stringify({...d,hash,pdfBase64:btoa(str)})});$('#autoNote').hidden=false}catch(_){}
-  }
+  const fname='consentimiento-bicicletas-'+safe+'-'+d.iso.slice(0,10)+'.pdf';
+  last_pdf={bytes:toBytes(str),name:fname,data:d,payload:{...d,hash,fileName:fname,recipients:CFG.recipients,pdfBase64:btoa(str)}};
+  $('#content').hidden=true;$('#done').hidden=false;scrollTo(0,0);
+  if(CFG.endpoint)sendAuto();else setStatus('manualP',true);
 });
 
 $('#fav').href=document.querySelector('.logo').src;
