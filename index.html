@@ -52,6 +52,11 @@ input:focus,select:focus,textarea:focus,button:focus-visible,summary:focus-visib
 .lockmsg{display:flex;gap:12px;align-items:center;text-align:left;background:var(--goldl);border:2px solid var(--gold);border-radius:16px;padding:14px 16px;margin:16px 0 6px}
 .lockic{flex:none;width:46px;height:46px;border-radius:50%;background:var(--navy);display:grid;place-items:center;font-size:22px}
 .lockmsg b{display:block;font-size:17px;margin-bottom:2px}.lockmsg span{font-size:15px;color:#3B4660;line-height:1.4}
+.thanks{min-height:100vh;min-height:100dvh;background:var(--navy);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:32px 24px;border-bottom:8px solid var(--gold)}
+.thanks img{width:170px;height:170px;border-radius:50%;box-shadow:0 0 0 6px rgba(221,165,46,.45);margin-bottom:24px}
+.thanks h1{margin:0;font-size:30px;line-height:1.15}
+.thanks p{margin:12px 0 0;font-size:18px;color:#C9D1E2;max-width:440px}
+.thanks small{margin-top:28px;font-size:14px;color:var(--gold)}
 footer{text-align:center;color:var(--mute);font-size:14px;margin-top:26px}
 [hidden]{display:none!important}
 </style>
@@ -66,7 +71,6 @@ footer{text-align:center;color:var(--mute);font-size:14px;margin-top:26px}
   </div>
 </header>
 <main>
-  <p class="card mute" id="closeHint" data-i18n="closeHint" style="text-align:center;margin-top:18px" hidden></p>
   <div id="content">
   <p class="lead" data-i18n="lead"></p>
   <div id="quick" class="quick"></div>
@@ -130,6 +134,13 @@ footer{text-align:center;color:var(--mute);font-size:14px;margin-top:26px}
   <footer>Feri Stays</footer>
 </main>
 
+<section id="thanks" class="thanks" hidden>
+  <img id="thanksLogo" alt="Feri Stays">
+  <h1 data-i18n="thanksH"></h1>
+  <p data-i18n="thanksP"></p>
+  <small data-i18n="thanksS"></small>
+</section>
+
 <script>
 /* ============ CONFIGURACIÓN (edítala aquí) ============ */
 const CFG={
@@ -148,7 +159,7 @@ es:{
   acceptH:'Confirmo que:',c6:'Recibí la bicicleta y el casco en buen estado (frenos, llantas, luces) y los revisé antes de salir.',c7:'Me comprometo a usar casco, respetar las normas de tránsito y no montar bajo los efectos del alcohol o drogas.',c1:'Leí y acepto las reglas de uso.',c2:'Entiendo los riesgos y acepto el descargo de responsabilidad.',c3:'Acepto pagar el costo real de reparación o reposición en los casos del punto 3.',c4:'Autorizo el tratamiento de mis datos personales según el punto 5.',
   signH:'Firma (dibújala con el dedo)',clear:'Borrar firma',submit:'Firmar y crear constancia',
   errFields:'Completa los campos marcados en rojo.',errEmail:'Revisa el correo electrónico.',errChecks:'Marca todas las confirmaciones para continuar.',errSign:'Falta tu firma.',errMinors:'Escribe el nombre y la edad de cada menor y confirma que eres su responsable.',
-  doneH:'¡Listo! Tu constancia está creada',manualP:'Envía tu constancia a Feri Stays con el botón de abajo. Elige Gmail: los correos de destino se copian solos, solo pégalos en “Para”.',sendingP:'Enviando tu constancia a Feri Stays…',sentP:'Tu constancia fue enviada a Feri Stays. Disfruta tu paseo y usa siempre el casco.',failP:'No pudimos enviarla automáticamente (¿sin internet?). Reintenta o compártela con el botón de abajo.',retry:'Reintentar envío',lockH:'Solicita la clave del candado',lockP:'Pide a la anfitriona la clave del candado para poder liberar las bicicletas.',close:'Cerrar',closeHint:'Ya puedes cerrar esta pestaña.',share:'Compartir o enviar el PDF',download:'Descargar mi copia en PDF'},
+  doneH:'¡Listo! Tu constancia está creada',manualP:'Envía tu constancia a Feri Stays con el botón de abajo. Elige Gmail: los correos de destino se copian solos, solo pégalos en “Para”.',sendingP:'Enviando tu constancia a Feri Stays…',sentP:'Tu constancia fue enviada a Feri Stays. Disfruta tu paseo y usa siempre el casco.',failP:'No pudimos enviarla automáticamente (¿sin internet?). Reintenta o compártela con el botón de abajo.',retry:'Reintentar envío',lockH:'Solicita la clave del candado',lockP:'Pide a la anfitriona la clave del candado para poder liberar las bicicletas.',close:'Cerrar',thanksH:'¡Gracias por hospedarte con nosotros!',thanksP:'Disfruta tu paseo en bicicleta y usa siempre el casco.',thanksS:'Ya puedes cerrar esta pestaña.',share:'Compartir o enviar el PDF',download:'Descargar mi copia en PDF'},
  quick:[['Casco siempre','El casco es obligatorio para todos, en todo momento.'],['Respeta el tránsito','Sigue las normas de tránsito colombianas y cuida a peatones y otros ciclistas.'],['Uso bajo tu responsabilidad','Andar en bicicleta tiene riesgos. Tú decides si estás en condiciones de hacerlo.'],['Gratis, pero cuídala','El uso es gratuito. Los daños o la pérdida por descuido los asumes tú, al costo real de reparación o reposición.']],
  sec:[
  {h:'1. Reglas de uso',l:['Te entregamos la bicicleta y un casco, sin costo. Revisa la bicicleta antes de salir: frenos, llantas, timbre y luces. Si algo no funciona, no la uses y avísanos.','Usa siempre el casco bien ajustado (regla de la casa para todos los usuarios).','Cumple el Código Nacional de Tránsito: circula por la derecha, respeta semáforos y señales, cede el paso a los peatones y no uses los andenes.','No uses el celular ni audífonos mientras pedaleas, no te sujetes de otros vehículos y no lleves pasajeros.','No montes bajo los efectos del alcohol, drogas o medicamentos que afecten tu atención.','De noche o con poca luz usa luces y algo reflectivo; si no los tienes, no salgas.','No uses la bicicleta con lluvia fuerte ni por vías o terrenos peligrosos.','Solo la usa la persona que firma (y los menores a su cargo). No la prestes a otras personas.','Cuando la dejes, asegúrala siempre con el candado. Al terminar tu estadía, devuélvela en el lugar indicado.','No modifiques ni repares la bicicleta. Si hay un accidente o daño, avísanos de inmediato. En una emergencia llama al 123.']},
@@ -168,7 +179,7 @@ en:{
   acceptH:'I confirm that:',c6:'I received the bike and helmet in good condition (brakes, tires, lights) and checked them before riding.',c7:'I commit to wearing a helmet, following traffic rules and not riding under the influence of alcohol or drugs.',c1:'I have read and accept the rules of use.',c2:'I understand the risks and accept the liability waiver.',c3:'I agree to pay the actual cost of repair or replacement in the cases in section 3.',c4:'I authorize the processing of my personal data as described in section 5.',
   signH:'Signature (draw it with your finger)',clear:'Clear signature',submit:'Sign and create record',
   errFields:'Please complete the fields marked in red.',errEmail:'Please check the email address.',errChecks:'Tick all the confirmations to continue.',errSign:'Your signature is missing.',errMinors:'Enter the name and age of each minor and confirm you are responsible for them.',
-  doneH:'Done! Your record has been created',manualP:'Send your record to Feri Stays with the button below. Choose Gmail: the destination emails are copied for you, just paste them into “To”.',sendingP:'Sending your record to Feri Stays…',sentP:'Your record was sent to Feri Stays. Enjoy your ride and always wear a helmet.',failP:'We could not send it automatically (no internet?). Try again or share it with the button below.',retry:'Try again',lockH:'Ask for the lock code',lockP:'Ask your host for the lock code to release the bikes.',close:'Close',closeHint:'You can now close this tab.',share:'Share or send the PDF',download:'Download my PDF copy'},
+  doneH:'Done! Your record has been created',manualP:'Send your record to Feri Stays with the button below. Choose Gmail: the destination emails are copied for you, just paste them into “To”.',sendingP:'Sending your record to Feri Stays…',sentP:'Your record was sent to Feri Stays. Enjoy your ride and always wear a helmet.',failP:'We could not send it automatically (no internet?). Try again or share it with the button below.',retry:'Try again',lockH:'Ask for the lock code',lockP:'Ask your host for the lock code to release the bikes.',close:'Close',thanksH:'Thank you for staying with us!',thanksP:'Enjoy your bike ride and always wear a helmet.',thanksS:'You can now close this tab.',share:'Share or send the PDF',download:'Download my PDF copy'},
  quick:[['Helmet always','A helmet is required for everyone, at all times.'],['Follow traffic rules','Follow Colombian traffic rules and look out for pedestrians and other cyclists.'],['Ride at your own risk','Cycling carries risks. You decide whether you are fit to ride.'],['Free, but take care of it','Use is free. You are responsible for damage or loss through carelessness, at the actual cost of repair or replacement.']],
  sec:[
  {h:'1. Rules of use',l:['We provide the bike and a helmet at no charge. Check the bike before riding: brakes, tires, bell and lights. If something does not work, do not ride it and let us know.','Always wear a properly fitted helmet (house rule for every rider).','Follow the Colombian Traffic Code: ride on the right, obey traffic lights and signs, yield to pedestrians and stay off sidewalks.','Do not use your phone or headphones while riding, do not hold on to other vehicles and do not carry passengers.','Do not ride under the influence of alcohol, drugs or medication that affects your attention.','At night or in low light, use lights and something reflective; if you do not have them, do not ride.','Do not ride in heavy rain or on dangerous roads or terrain.','Only the person who signs (and the minors in their care) may use the bike. Do not lend it to others.','Whenever you leave it, lock it. When your stay ends, return it to the place we indicate.','Do not modify or repair the bike. If there is an accident or damage, tell us right away. In an emergency, call 123.']},
@@ -188,7 +199,7 @@ fr:{
   acceptH:'Je confirme que :',c6:'J’ai reçu le vélo et le casque en bon état (freins, pneus, éclairage) et je les ai vérifiés avant de partir.',c7:'Je m’engage à porter un casque, à respecter le code de la route et à ne pas rouler sous l’effet de l’alcool ou de drogues.',c1:'J’ai lu et j’accepte les règles d’utilisation.',c2:'Je comprends les risques et j’accepte la décharge de responsabilité.',c3:'J’accepte de payer le coût réel de la réparation ou du remplacement dans les cas du point 3.',c4:'J’autorise le traitement de mes données personnelles selon le point 5.',
   signH:'Signature (dessinez-la avec le doigt)',clear:'Effacer la signature',submit:'Signer et créer le justificatif',
   errFields:'Veuillez remplir les champs marqués en rouge.',errEmail:'Vérifiez l’adresse e-mail.',errChecks:'Cochez toutes les confirmations pour continuer.',errSign:'Votre signature est manquante.',errMinors:'Indiquez le nom et l’âge de chaque mineur et confirmez que vous en êtes responsable.',
-  doneH:'C’est fait ! Votre justificatif est créé',manualP:'Envoyez votre justificatif à Feri Stays avec le bouton ci-dessous. Choisissez Gmail : les adresses de destination sont copiées, collez-les simplement dans « À ».',sendingP:'Envoi de votre justificatif à Feri Stays…',sentP:'Votre justificatif a été envoyé à Feri Stays. Bonne balade, et portez toujours votre casque.',failP:'Nous n’avons pas pu l’envoyer automatiquement (pas de connexion ?). Réessayez ou partagez-le avec le bouton ci-dessous.',retry:'Réessayer',lockH:'Demandez le code du cadenas',lockP:'Demandez à votre hôte le code du cadenas pour libérer les vélos.',close:'Fermer',closeHint:'Vous pouvez maintenant fermer cet onglet.',share:'Partager ou envoyer le PDF',download:'Télécharger ma copie PDF'},
+  doneH:'C’est fait ! Votre justificatif est créé',manualP:'Envoyez votre justificatif à Feri Stays avec le bouton ci-dessous. Choisissez Gmail : les adresses de destination sont copiées, collez-les simplement dans « À ».',sendingP:'Envoi de votre justificatif à Feri Stays…',sentP:'Votre justificatif a été envoyé à Feri Stays. Bonne balade, et portez toujours votre casque.',failP:'Nous n’avons pas pu l’envoyer automatiquement (pas de connexion ?). Réessayez ou partagez-le avec le bouton ci-dessous.',retry:'Réessayer',lockH:'Demandez le code du cadenas',lockP:'Demandez à votre hôte le code du cadenas pour libérer les vélos.',close:'Fermer',thanksH:'Merci de séjourner chez nous !',thanksP:'Bonne balade à vélo, et portez toujours votre casque.',thanksS:'Vous pouvez maintenant fermer cet onglet.',share:'Partager ou envoyer le PDF',download:'Télécharger ma copie PDF'},
  quick:[['Casque toujours','Le casque est obligatoire pour tout le monde, en permanence.'],['Respectez le code de la route','Suivez les règles de circulation colombiennes et faites attention aux piétons et aux autres cyclistes.'],['À vos risques','Le vélo comporte des risques. C’est à vous de juger si vous êtes en état de rouler.'],['Gratuit, mais prenez-en soin','L’utilisation est gratuite. Vous répondez des dommages ou de la perte par négligence, au coût réel de la réparation ou du remplacement.']],
  sec:[
  {h:'1. Règles d’utilisation',l:['Nous mettons à votre disposition le vélo et un casque, sans frais. Vérifiez le vélo avant de partir : freins, pneus, sonnette et éclairage. Si quelque chose ne fonctionne pas, ne l’utilisez pas et prévenez-nous.','Portez toujours un casque bien ajusté (règle de la maison pour tous).','Respectez le code de la route colombien : roulez à droite, respectez les feux et les panneaux, cédez le passage aux piétons et n’utilisez pas les trottoirs.','N’utilisez pas le téléphone ni d’écouteurs en roulant, ne vous accrochez pas à d’autres véhicules et ne transportez pas de passager.','Ne roulez pas sous l’effet de l’alcool, de drogues ou de médicaments qui altèrent votre attention.','La nuit ou par faible luminosité, utilisez des feux et un élément réfléchissant ; sinon, ne roulez pas.','Ne roulez pas sous une forte pluie ni sur des routes ou terrains dangereux.','Seule la personne qui signe (et les mineurs sous sa garde) peut utiliser le vélo. Ne le prêtez à personne.','Quand vous le laissez, attachez-le toujours avec l’antivol. À la fin du séjour, rendez-le à l’endroit indiqué.','Ne modifiez ni ne réparez le vélo. En cas d’accident ou de dommage, prévenez-nous immédiatement. En cas d’urgence, appelez le 123.']},
@@ -256,69 +267,106 @@ function validate(){
 /* ============ PDF (sin librerías) ============ */
 const latin=s=>String(s).replace(/[’‘]/g,"'").replace(/[“”]/g,'"').replace(/[–—]/g,'-').replace(/…/g,'...').replace(/•/g,'-').replace(/œ/g,'oe').replace(/Œ/g,'OE').replace(/[\u00a0\u202f\u2009]/g,' ').replace(/[^\x00-\xff]/g,'?');
 const pdfEsc=s=>s.replace(/([\\()])/g,'\\$1');
-function makePDF(items,sigB64,sigW,sigH){
-  const W=595,H=842,M=50,maxW=W-2*M,pages=[[]];let y=H-72;
+/* Diseño de la constancia: encabezado azul con logo, franja dorada, tablas y pie de página */
+const PC={navy:[0.122,0.176,0.278],gold:[0.867,0.647,0.18],goldd:[0.54,0.39,0.06],goldl:[0.984,0.949,0.851],mute:[0.37,0.42,0.5],line:[0.85,0.87,0.9],ink:[0.13,0.15,0.2],white:[1,1,1],soft:[0.79,0.82,0.89],bg:[0.957,0.961,0.973]};
+function makePDF(items,sig,logo,head){
+  const W=595,H=842,M=50,maxW=W-2*M,BOT=64,pages=[];let y=0;
   const cw=(fs,b)=>fs*(b?0.57:0.53);
-  const wrap=(text,fs,b,ind)=>{const mc=Math.floor((maxW-ind)/cw(fs,b));const out=[];let cur='';
-    text.split(/\s+/).forEach(w=>{if(!w)return;if((cur+' '+w).trim().length>mc){if(cur)out.push(cur);cur=w}else cur=(cur+' '+w).trim()});
+  const wrap=(text,fs,b,w)=>{const mc=Math.max(8,Math.floor(w/cw(fs,b)));const out=[];let cur='';
+    latin(text).split(/\s+/).forEach(w2=>{if(!w2)return;if((cur+' '+w2).trim().length>mc){if(cur)out.push(cur);cur=w2}else cur=(cur+' '+w2).trim()});
     if(cur)out.push(cur);return out.length?out:['']};
-  const cur=()=>pages[pages.length-1],np=()=>{pages.push([]);y=H-72};
+  const f=n=>(+n).toFixed(2),rg=c=>c.map(f).join(' ');
+  const put=s=>{pages[pages.length-1]+=s};
+  const txt=(x,yy,t,fs,o={})=>put('BT /'+(o.f||(o.b?'F2':'F1'))+' '+fs+' Tf '+rg(o.c||PC.ink)+' rg '+f(x)+' '+f(yy)+' Td ('+pdfEsc(o.raw?t:latin(t))+') Tj ET\n');
+  const box=(x,yy,w,h,c)=>put(rg(c)+' rg '+f(x)+' '+f(yy)+' '+f(w)+' '+f(h)+' re f\n');
+  const frame=(x,yy,w,h,c,lw)=>put(rg(c)+' RG '+(lw||0.8)+' w '+f(x)+' '+f(yy)+' '+f(w)+' '+f(h)+' re S\n');
+  const img=(n,x,yy,w,h)=>put('q '+f(w)+' 0 0 '+f(h)+' '+f(x)+' '+f(yy)+' cm /'+n+' Do Q\n');
+  const newPage=()=>{
+    pages.push('');
+    if(pages.length===1){
+      box(0,H-124,W,124,PC.navy);box(0,H-128,W,4,PC.gold);
+      img('Im2',M,H-112,92,92);
+      const tl=wrap(head.title,17,1,W-M-(M+112)).slice(0,2);
+      tl.forEach((l,i)=>txt(M+112,H-50-i*21,l,17,{b:1,c:PC.white}));
+      const by=H-50-tl.length*21-4;
+      txt(M+112,by,'Feri Stays',11.5,{b:1,c:PC.gold});
+      txt(M+112,by-16,head.sub,9,{c:PC.soft});
+      y=H-152;
+    }else{
+      box(0,H-42,W,42,PC.navy);box(0,H-45,W,3,PC.gold);
+      img('Im2',M,H-37,32,32);
+      txt(M+42,H-25,head.title,9,{b:1,c:PC.white});
+      y=H-70;
+    }
+  };
+  const need=h=>{if(y-h<BOT)newPage()};
+  newPage();
   items.forEach(it=>{
-    if(it.sig){const dw=220,dh=dw*sigH/sigW;if(y-dh-20<55)np();y-=dh;cur().push({img:1,x:M,y,w:dw,h:dh});y-=14;return}
-    const fs=it.s||10,ind=it.bullet?12:0;y-=(it.g||0);
-    wrap(latin(it.t),fs,it.b,ind).forEach((ln,i)=>{if(y-fs*1.45<55)np();y-=fs*1.45;
-      if(it.bullet&&i===0)cur().push({x:M,y,t:'-',fs,b:0,c:it.c});
-      cur().push({x:M+ind,y,t:ln,fs,b:it.b,c:it.c})});
+    if(it.sec){need(48);y-=24;txt(M,y,it.sec,12.5,{b:1,c:PC.navy});y-=8;box(M,y,30,2.4,PC.gold);box(M+30,y+0.9,maxW-30,0.6,PC.line);y-=10;return}
+    if(it.sub){need(36);y-=8;txt(M,y-11,it.sub,10.5,{b:1,c:PC.navy});y-=16;return}
+    if(it.kv){const kl=wrap(it.kv[0],8.5,1,150),vl=wrap(it.kv[1],10,0,maxW-180),h=Math.max(kl.length*11.5,vl.length*13)+10;need(h);
+      if(it.i%2===0)box(M,y-h,maxW,h,PC.bg);
+      kl.forEach((l,j)=>txt(M+10,y-15-j*11.5,l,8.5,{b:1,c:PC.mute}));
+      vl.forEach((l,j)=>txt(M+170,y-15-j*13,l,10,{c:PC.ink}));
+      y-=h;return}
+    if(it.chk){const ls=wrap(it.chk,10,0,maxW-24),h=ls.length*13.5+6;need(h);
+      box(M+1,y-13.5,11,11,PC.gold);txt(M+2.7,y-11.6,'4',8.5,{f:'F3',raw:1,c:PC.white});
+      ls.forEach((l,j)=>txt(M+22,y-11-j*13.5,l,10));y-=h;return}
+    if(it.p){const fs=it.s||9.5,ind=it.bullet?14:0;wrap(it.p,fs,0,maxW-ind).forEach((l,j)=>{need(fs*1.5);y-=fs*1.5;
+      if(it.bullet&&j===0)box(M+3,y+fs*0.25,3.5,3.5,PC.gold);txt(M+ind,y,l,fs)});y-=2;return}
+    if(it.sig){const dw=230,dh=Math.min(110,dw*sig.h/sig.w);need(dh+72);y-=12;
+      frame(M,y-dh-20,dw+20,dh+20,PC.line,1);img('Im1',M+10,y-dh-10,dw,dh);y-=dh+20;
+      box(M,y-1.2,dw+20,1.2,PC.navy);
+      txt(M,y-16,it.name,10.5,{b:1,c:PC.navy});txt(M,y-29,it.doc,9,{c:PC.mute});txt(M,y-41,it.when,9,{c:PC.mute});y-=50;return}
+    if(it.hash){need(54);y-=12;box(M,y-38,maxW,38,PC.goldl);box(M,y-38,3,38,PC.gold);
+      txt(M+14,y-14,it.label,8.5,{b:1,c:PC.goldd});txt(M+14,y-28,it.hash,7.6,{f:'F4',c:PC.ink});y-=40;return}
   });
   const n=pages.length,pl=T[lang].pdf.page;
-  const streams=pages.map((p,i)=>{
-    let s='0.12 0.18 0.28 rg 0 '+(H-10)+' '+W+' 10 re f\n0.87 0.65 0.18 rg 0 '+(H-13)+' '+W+' 3 re f\n';
-    p.forEach(o=>{
-      if(o.img){s+='q '+o.w.toFixed(1)+' 0 0 '+o.h.toFixed(1)+' '+o.x+' '+o.y.toFixed(1)+' cm /Im1 Do Q\n';return}
-      const c=o.c||[0.1,0.1,0.15];
-      s+='BT /'+(o.b?'F2':'F1')+' '+o.fs+' Tf '+c.join(' ')+' rg '+o.x+' '+o.y.toFixed(1)+' Td ('+pdfEsc(o.t)+') Tj ET\n';
-    });
-    s+='BT /F1 8 Tf 0.4 0.43 0.5 rg '+M+' 28 Td (Feri Stays  |  '+pdfEsc(latin(pl))+' '+(i+1)+'/'+n+') Tj ET\n';
-    return s;
+  pages.forEach((_,i)=>{
+    const pt=latin(pl+' '+(i+1)+' / '+n);
+    pages[i]+=rg(PC.line)+' rg '+M+' 44 '+maxW+' 0.6 re f\n'
+      +'BT /F2 8 Tf '+rg(PC.navy)+' rg '+M+' 30 Td (Feri Stays) Tj ET\n'
+      +'BT /F1 8 Tf '+rg(PC.mute)+' rg '+(M+50)+' 30 Td ('+pdfEsc(latin('·  '+head.title))+') Tj ET\n'
+      +'BT /F1 8 Tf '+rg(PC.mute)+' rg '+f(W-M-pt.length*8*0.53)+' 30 Td ('+pdfEsc(pt)+') Tj ET\n';
   });
-  const bin=atob(sigB64);let out='%PDF-1.4\n%\xE2\xE3\xCF\xD3\n';const offs=[];
+  const sb=atob(sig.b64),lb=atob(logo.b64);let out='%PDF-1.4\n%\xE2\xE3\xCF\xD3\n';const offs=[];
   const add=(id,body)=>{offs[id]=out.length;out+=id+' 0 obj\n'+body+'\nendobj\n'};
-  const kids=pages.map((_,i)=>(7+2*i)+' 0 R').join(' ');
+  const jpg=(w,h,b)=>'<< /Type /XObject /Subtype /Image /Width '+w+' /Height '+h+' /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length '+b.length+' >>\nstream\n'+b+'\nendstream';
   add(1,'<< /Type /Catalog /Pages 2 0 R >>');
-  add(2,'<< /Type /Pages /Kids ['+kids+'] /Count '+n+' >>');
+  add(2,'<< /Type /Pages /Kids ['+pages.map((_,i)=>(10+2*i)+' 0 R').join(' ')+'] /Count '+n+' >>');
   add(3,'<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>');
   add(4,'<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>');
-  add(5,'<< /Type /XObject /Subtype /Image /Width '+sigW+' /Height '+sigH+' /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length '+bin.length+' >>\nstream\n'+bin+'\nendstream');
-  streams.forEach((s,i)=>{
-    add(6+2*i,'<< /Length '+s.length+' >>\nstream\n'+s+'endstream');
-    add(7+2*i,'<< /Type /Page /Parent 2 0 R /MediaBox [0 0 '+W+' '+H+'] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> /XObject << /Im1 5 0 R >> >> /Contents '+(6+2*i)+' 0 R >>');
+  add(5,jpg(sig.w,sig.h,sb));
+  add(6,jpg(logo.w,logo.h,lb));
+  add(7,'<< /Type /Font /Subtype /Type1 /BaseFont /ZapfDingbats >>');
+  add(8,'<< /Type /Font /Subtype /Type1 /BaseFont /Courier /Encoding /WinAnsiEncoding >>');
+  const res='<< /Font << /F1 3 0 R /F2 4 0 R /F3 7 0 R /F4 8 0 R >> /XObject << /Im1 5 0 R /Im2 6 0 R >> >>';
+  pages.forEach((s,i)=>{
+    add(9+2*i,'<< /Length '+s.length+' >>\nstream\n'+s+'endstream');
+    add(10+2*i,'<< /Type /Page /Parent 2 0 R /MediaBox [0 0 '+W+' '+H+'] /Resources '+res+' /Contents '+(9+2*i)+' 0 R >>');
   });
-  const N=6+2*n-1,xo=out.length;let x='xref\n0 '+(N+1)+'\n0000000000 65535 f \n';
+  const info=9+2*n;
+  add(info,'<< /Title ('+pdfEsc(latin(head.title))+') /Author (Feri Stays) /Creator (Feri Stays) >>');
+  const N=info,xo=out.length;let x='xref\n0 '+(N+1)+'\n0000000000 65535 f \n';
   for(let i=1;i<=N;i++)x+=String(offs[i]).padStart(10,'0')+' 00000 n \n';
-  out+=x+'trailer\n<< /Size '+(N+1)+' /Root 1 0 R >>\nstartxref\n'+xo+'\n%%EOF';
+  out+=x+'trailer\n<< /Size '+(N+1)+' /Root 1 0 R /Info '+info+' 0 R >>\nstartxref\n'+xo+'\n%%EOF';
   return out;
 }
-const NAVY=[0.12,0.18,0.28],GOLDD=[0.54,0.39,0.06];
 function docText(){return T[lang].sec.map(s=>s.h+'\n'+s.l.join('\n')).join('\n')}
 function buildItems(d,hash){
-  const t=T[lang],U=t.ui,P=t.pdf,L=[];
-  L.push({t:P.title,s:17,b:1,c:NAVY});
-  L.push({t:'Feri Stays',s:11,b:1,c:GOLDD,g:2});
-  L.push({t:P.date+': '+d.when+'  ('+d.iso+')',s:9.5,g:6});
-  L.push({t:P.lang+': '+LNAME[lang],s:9.5});
-  L.push({t:P.signer,s:12,b:1,c:NAVY,g:14});
-  [[U.name,d.name],[U.docType,d.docTypeLabel],[U.docNum,d.docNum],[U.email,d.email],[U.phone,d.phone||P.none],[U.stay,d.stay||P.none],[U.emerg,d.emerg||P.none]].forEach(([k,v])=>L.push({t:k+': '+v,s:10}));
-  if(d.minors)L.push({t:P.minorsLbl+': '+d.minorsInfo,s:10});
-  L.push({t:P.accepted,s:12,b:1,c:NAVY,g:14});
-  const ids=['c6','c7','c1','c2','c3','c4'].concat(d.minors?['c5']:[]);
-  ids.forEach(id=>L.push({t:'[X] '+U[id],s:10,bullet:0}));
-  L.push({t:P.docH,s:12,b:1,c:NAVY,g:16});
-  t.sec.forEach(s=>{L.push({t:s.h,s:10.5,b:1,c:NAVY,g:9});s.l.forEach(x=>L.push({t:x,s:9.5,bullet:1}))});
-  L.push({t:P.sigH,s:12,b:1,c:NAVY,g:18});
-  L.push({sig:1});
-  L.push({t:d.name+'  -  '+d.docTypeLabel+' '+d.docNum,s:10,b:1});
-  L.push({t:P.hash+':',s:8.5,g:8,c:[0.4,0.43,0.5]});
-  L.push({t:hash||'n/a',s:8,c:[0.4,0.43,0.5]});
+  const t=T[lang],U=t.ui,P=t.pdf,L=[],cl=s=>String(s).replace(/\s*\([^)]*\)\s*$/,'');
+  L.push({sec:P.signer});
+  const kv=[[U.name,d.name],[U.docType,d.docTypeLabel],[U.docNum,d.docNum],[U.email,d.email],[cl(U.phone),d.phone||P.none],[cl(U.stay),d.stay||P.none],[cl(U.emerg),d.emerg||P.none]];
+  if(d.minors)kv.push([P.minorsLbl,d.minorsInfo]);
+  kv.push([P.date,d.when+'  ('+d.iso+')'],[P.lang,LNAME[lang]]);
+  kv.forEach((x,i)=>L.push({kv:x,i}));
+  L.push({sec:P.accepted});
+  ['c6','c7','c1','c2','c3','c4'].concat(d.minors?['c5']:[]).forEach(id=>L.push({chk:U[id]}));
+  L.push({sec:P.docH});
+  t.sec.forEach(s=>{L.push({sub:s.h});s.l.forEach(x=>L.push({p:x,s:9.5,bullet:1}))});
+  L.push({sec:P.sigH});
+  L.push({sig:1,name:d.name,doc:d.docTypeLabel+' '+d.docNum,when:d.when});
+  L.push({hash:hash||'n/a',label:P.hash});
   return L;
 }
 async function sha(s){try{const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}catch(e){return ''}}
@@ -345,21 +393,20 @@ async function sendAuto(){
   }catch(e){setStatus('failP',true);$('#retry').hidden=false}
 }
 $('#share').addEventListener('click',sharePDF);$('#download').addEventListener('click',download);$('#retry').addEventListener('click',sendAuto);
-/* Cerrar: los navegadores solo permiten window.close() en pestañas abiertas por script;
-   si no se cierra (p. ej. abierta desde el QR), se limpia el formulario y se vuelve al inicio. */
+/* Cerrar: los navegadores no permiten cerrar una pestaña abierta desde el QR,
+   así que se muestra una pantalla de gratitud con el logo y se borran los datos del formulario. */
 $('#closeBtn').addEventListener('click',()=>{
-  try{window.close()}catch(_){}
-  setTimeout(()=>{
-    $('#f').reset();$('#minorsBox').hidden=true;initCanvas();$('#submit').disabled=false;last_pdf=null;
-    $('#done').hidden=true;$('#content').hidden=false;$('#closeHint').hidden=false;
-    document.querySelectorAll('.bad').forEach(el=>el.classList.remove('bad'));scrollTo(0,0);
-  },250);
+  $('#f').reset();$('#minorsBox').hidden=true;initCanvas();last_pdf=null;
+  document.querySelectorAll('.bad').forEach(el=>el.classList.remove('bad'));
+  $('#thanksLogo').src=$('.logo').src;
+  document.querySelector('header.hero').hidden=true;document.querySelector('main').hidden=true;
+  $('#thanks').hidden=false;scrollTo(0,0);
 });
 
 $('#f').addEventListener('submit',async e=>{
   e.preventDefault();const eb=$('#err'),msg=validate();
   if(msg){eb.textContent=msg;eb.hidden=false;eb.scrollIntoView({block:'center',behavior:'smooth'});return}
-  eb.hidden=true;$('#submit').disabled=true;$('#closeHint').hidden=true;
+  eb.hidden=true;$('#submit').disabled=true;
   const v=id=>$('#'+id).value.trim(),now=new Date(),U=T[lang].ui;
   const d={name:v('name'),docType:$('#docType').value,docTypeLabel:U[$('#docType').value],docNum:v('docNum'),email:v('email'),phone:v('phone'),stay:v('stay'),emerg:v('emerg'),
     minors:$('#hasMinors').checked,minorsInfo:v('minorsInfo'),lang,iso:now.toISOString(),when:now.toLocaleString(LOC[lang],{dateStyle:'long',timeStyle:'short'})};
@@ -367,7 +414,10 @@ $('#f').addEventListener('submit',async e=>{
   c2.fillStyle='#fff';c2.fillRect(0,0,t2.width,t2.height);c2.drawImage(cv,0,0);
   const url=t2.toDataURL('image/jpeg',0.92),b64=url.split(',')[1];
   const hash=await sha(JSON.stringify(d)+docText()+b64);
-  const str=makePDF(buildItems(d,hash),b64,t2.width,t2.height);
+  const lg=document.createElement('canvas');lg.width=lg.height=320;const lc=lg.getContext('2d');
+  lc.fillStyle='#1F2D47';lc.fillRect(0,0,320,320);try{lc.drawImage($('.logo'),0,0,320,320)}catch(_){}
+  const lb64=lg.toDataURL('image/jpeg',0.9).split(',')[1],PP=T[lang].pdf;
+  const str=makePDF(buildItems(d,hash),{b64,w:t2.width,h:t2.height},{b64:lb64,w:320,h:320},{title:PP.title,sub:PP.date+': '+d.when});
   const safe=d.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||'firmante';
   const fname='consentimiento-bicicletas-'+safe+'-'+d.iso.slice(0,10)+'.pdf';
   last_pdf={bytes:toBytes(str),name:fname,data:d,payload:{...d,hash,fileName:fname,recipients:CFG.recipients,pdfBase64:btoa(str)}};
